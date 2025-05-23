@@ -1,0 +1,39 @@
+{
+  "agents": [
+    {
+      "name": "venue_finder",
+      "file": "venue_finder_agent",
+      "object": "venue_finder_agent"
+    },
+    {
+      "name": "catering",
+      "file": "catering_agent",
+      "object": "catering_agent"
+    },
+    {
+      "name": "interior_design",
+      "file": "interior_design_agent",
+      "object": "interior_design_agent"
+    },
+    {
+      "name": "invite_manager",
+      "file": "invite_manager_agent",
+      "object": "invite_manager_agent"
+    },
+    {
+      "name": "schedule",
+      "file": "schedule_agent",
+      "object": "schedule_agent"
+    },
+    {
+      "name": "sponsorship",
+      "file": "sponsorship_agent",
+      "object": "sponsorship_agent"
+    },
+    {
+      "name": "voice",
+      "file": "voice_agent",
+      "object": "voice_agent"
+    }
+  ]
+}

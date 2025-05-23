@@ -1,0 +1,40 @@
+{
+  "Dubai": [
+    {
+      "vendor": "Al Tazaj Catering",
+      "menu_type": "Buffet",
+      "cost_per_person": 40,
+      "dietary_options": ["vegetarian", "halal"]
+    },
+    {
+      "vendor": "Dubai Feast Co.",
+      "menu_type": "Plated",
+      "cost_per_person": 55,
+      "dietary_options": ["vegan", "gluten-free"]
+    }
+  ],
+  "Abu Dhabi": [
+    {
+      "vendor": "Capital Bites",
+      "menu_type": "Buffet",
+      "cost_per_person": 50,
+      "dietary_options": ["halal", "keto"]
+    }
+  ],
+  "New York": [
+    {
+      "vendor": "Gotham Gourmet",
+      "menu_type": "Plated",
+      "cost_per_person": 75,
+      "dietary_options": ["vegan", "nut-free"]
+    }
+  ],
+  "Mumbai": [
+    {
+      "vendor": "Masala Magic Catering",
+      "menu_type": "Thali",
+      "cost_per_person": 35,
+      "dietary_options": ["vegetarian", "jain"]
+    }
+  ]
+}
