@@ -6,6 +6,7 @@ Plan weddings, birthdays, and corporate events using multi-agent AI orchestratio
 
 > Built for developers, planners, and creators who want to see AI in action — with real visual output, speech, and proposal exports.
 
+[![Ko-fi](https://ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi.com/atefataya)
 ---
 
 ## 💡 Features
