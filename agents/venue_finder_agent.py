@@ -1,36 +1,19 @@
+import json
+from pathlib import Path
 from google.adk.agents import Agent
 
 def find_venues(event_type: str, location: str, guests: int, budget: float) -> dict:
-    """
-    Mock function to find venues based on event details.
-    """
-    # In a real scenario, this would query a database or API.
-    venues = [
-        {
-            "name": "Grand Hall",
-            "location": location,
-            "capacity": 150,
-            "price": 4500,
-        },
-        {
-            "name": "Sunset Gardens",
-            "location": location,
-            "capacity": 120,
-            "price": 4000,
-        },
-        {
-            "name": "City Banquet Center",
-            "location": location,
-            "capacity": 200,
-            "price": 5000,
-        },
-    ]
-    # Filter venues based on guests and budget
-    suitable_venues = [
-        venue for venue in venues
-        if venue["capacity"] >= guests and venue["price"] <= budget
-    ]
-    return {"status": "success", "venues": suitable_venues}
+    data_path = Path("data/venues.json")
+    if not data_path.exists():
+        return {"status": "error", "venues": [], "message": "Venue data not found"}
+
+    with open(data_path, "r") as f:
+        venues_data = json.load(f)
+
+    city_venues = venues_data.get(location, [])
+    suitable = [v for v in city_venues if v["capacity"] >= guests and v["price"] <= budget]
+
+    return {"status": "success", "venues": suitable}
 
 venue_finder_agent = Agent(
     name="venue_finder_agent",

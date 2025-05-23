@@ -1,0 +1,10 @@
+# Hide sensitive info
+.env
+
+# Python environment
+.venv/
+__pycache__/
+*.pyc
+
+# Streamlit
+.streamlit/config.toml

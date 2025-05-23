@@ -1,31 +1,27 @@
-# agents/catering_agent.py
+import json
+from pathlib import Path
+from google.adk.agents import Agent
 
-from adk.agent import Agent
-from adk.types import AgentInput, AgentOutput
-from adk.context import Context
-from adk.prompt import Prompt
+def suggest_catering(event_type: str, guests: int, cuisine: str, budget: float, location: str) -> dict:
+    data_path = Path("data/catering.json")
+    if not data_path.exists():
+        return {"status": "error", "options": [], "message": "Catering data not found"}
 
-class CateringAgent(Agent):
-    def __init__(self):
-        super().__init__(name="CateringAgent")
+    with open(data_path, "r") as f:
+        catering_data = json.load(f)
 
-    def prompt(self, context: Context, input: AgentInput) -> Prompt:
-        cuisine = input.get("cuisine", "any")
-        guests = input["guests"]
-        budget = input["budget"]
+    city_options = catering_data.get(location, [])
+    suitable = [
+        vendor for vendor in city_options
+        if vendor["cost_per_person"] * guests <= budget
+    ]
 
-        prompt_text = f"""
-        Suggest 3 catering options that provide {cuisine} food for {guests} people.
-        The total budget is ${budget}.
-        For each, include:
-        - Vendor name
-        - Menu type (buffet/plated)
-        - Cost per person
-        - Total cost
-        - Dietary options if available
-        """
+    return {"status": "success", "options": suitable}
 
-        return Prompt(text=prompt_text)
-
-    def process_output(self, context: Context, output: AgentOutput):
-        return output.response
+catering_agent = Agent(
+    name="catering_agent",
+    model="gemini-2.5-flash-preview-05-20",
+    description="Agent to suggest catering vendors and menus.",
+    instruction="You are a helpful agent that recommends catering options based on event type, guest count, cuisine preferences, location, and total budget.",
+    tools=[suggest_catering],
+)
