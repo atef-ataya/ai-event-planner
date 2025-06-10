@@ -83,7 +83,7 @@ pytz==2025.2
 PyYAML==6.0.2
 referencing==0.36.2
 reportlab==4.4.1
-requests==2.32.3
+requests==2.32.4
 rpds-py==0.25.1
 rsa==4.9.1
 shapely==2.1.1
