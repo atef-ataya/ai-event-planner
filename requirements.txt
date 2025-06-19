@@ -103,7 +103,7 @@ typing_extensions==4.13.2
 tzdata==2025.2
 tzlocal==5.3.1
 uritemplate==4.1.1
-urllib3==2.4.0
+urllib3==2.5.0
 uvicorn==0.34.2
 websockets==15.0.1
 wrapt==1.17.2
