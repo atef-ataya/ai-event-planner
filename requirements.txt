@@ -2,7 +2,7 @@ altair==5.5.0
 annotated-types==0.7.0
 anyio==4.9.0
 attrs==25.3.0
-Authlib==1.5.2
+Authlib==1.6.4
 blinker==1.9.0
 cachetools==5.5.2
 certifi==2025.4.26
