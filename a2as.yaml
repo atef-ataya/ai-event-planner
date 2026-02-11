@@ -1,0 +1,195 @@
+manifest:
+  version: "0.1.3"
+  schema: https://a2as.org/cert/schema
+  subject:
+    name: atef-ataya/ai-event-planner
+    source: https://github.com/atef-ataya/ai-event-planner
+    branch: main
+    commit: "a6acf906"
+    scope: [agents/venue_finder_agent.py, agents/catering_agent.py, agents/invite_manager_agent.py, agents/interior_design_agent.py,
+      utils/timeline.py, agents/sponsorship_agent.py, agents/schedule_agent.py, agents/voice_agent.py]
+  issued:
+    by: A2AS.org
+    at: '2026-02-11T16:55:02Z'
+    url: https://a2as.org/certified/agents/atef-ataya/ai-event-planner
+  signatures:
+    digest: sha256:tIfFAduk3t5fd6AaYnyIMu8cWjmhTndDOgPofLWe1lc
+    key: ed25519:wjNDiJJNbSPzwU3IylSQ_g3jNDa-o4ARiR8jdRtdp6M
+    sig: ed25519:I4dVcCzBqDyCeIZtprlJv0SgdQwm0cdz44uE0zZqWTk2Col-zRO1kZJsbMhbqJEsWQhzmGOLBnCWFwdXzIBPCQ
+
+agents:
+  catering_agent:
+    type: instance
+    models: [gemini-2.5-flash-preview-05-20]
+    tools: [suggest_catering]
+    params:
+      name: catering_agent
+      description: Agent to suggest catering vendors and menus.
+      instruction: ['You are a helpful agent that recommends catering options based on event type, guest count, cuisine preferences,
+          location, and total budget.']
+  interior_design_agent:
+    type: instance
+    models: [gemini-2.5-flash-preview-05-20]
+    tools: [design_theme]
+    params:
+      name: interior_design_agent
+      description: Agent to suggest interior decoration styles and themes for events.
+      instruction: ['You are a helpful interior designer for events. Recommend a theme-based setup including colors, elements,
+          and styles.']
+  invite_manager_agent:
+    type: instance
+    models: [gemini-2.5-flash-preview-05-20]
+    tools: [generate_invites]
+    params:
+      name: invite_manager_agent
+      description: Agent to generate invitation messages for events based on type and communication channel.
+      instruction: ['You are an invite expert. Write clear and compelling messages for WhatsApp, Email, or SMS based on event
+          type and guest count.']
+  schedule_agent:
+    type: instance
+    models: [gemini-2.5-flash-preview-05-20]
+    tools: [generate_timeline]
+    params:
+      name: schedule_agent
+      description: Agent to create a personalized timeline for the event.
+      instruction: [Generate a schedule based on event type and start time. Use industry best practices.]
+  sponsorship_agent:
+    type: instance
+    models: [gemini-2.5-flash-preview-05-20]
+    tools: [find_sponsors]
+    params:
+      name: sponsorship_agent
+      description: Agent to suggest potential sponsors and pitch templates for events.
+      instruction: ['You are a sponsorship expert. Recommend aligned brands and generate outreach messages based on city,
+          audience, event type, and theme.']
+  venue_finder_agent:
+    type: instance
+    models: [gemini-2.5-flash-preview-05-20]
+    tools: [find_venues]
+    params:
+      name: venue_finder_agent
+      description: Agent to find suitable venues based on event details.
+      instruction: ['You are a helpful agent that suggests venues based on event type, location, guest count, and budget.']
+  voice_agent:
+    type: instance
+    models: [gemini-2.5-flash-preview-05-20]
+    tools: [generate_audio]
+    params:
+      name: voice_agent
+      description: Agent that converts event summaries into spoken audio using ElevenLabs.
+      instruction: [You are a voice assistant. Generate an audio version of the final event plan using text-to-speech.]
+
+models:
+  gemini-2.5-flash-preview-05-20:
+    type: literal
+    agents: [venue_finder_agent, catering_agent, invite_manager_agent, interior_design_agent, sponsorship_agent, schedule_agent,
+      voice_agent]
+
+tools:
+  design_theme:
+    type: function
+    agents: [interior_design_agent]
+    params:
+      description: Suggest interior design ideas for the event.
+  find_sponsors:
+    type: function
+    agents: [sponsorship_agent]
+  find_venues:
+    type: function
+    agents: [venue_finder_agent]
+  generate_audio:
+    type: function
+    agents: [voice_agent]
+    params:
+      description: |-
+        Mock function to convert event summary to audio.
+        Replace with ElevenLabs integration later.
+  generate_invites:
+    type: function
+    agents: [invite_manager_agent]
+    params:
+      description: Generates a simple invitation message.
+  generate_timeline:
+    type: function
+    agents: [schedule_agent]
+  suggest_catering:
+    type: function
+    agents: [catering_agent]
+
+imports:
+  Agent: google.adk.agents.Agent
+  datetime: datetime.datetime
+  generate_timeline: utils.timeline.generate_timeline
+  json: json
+  Path: pathlib.Path
+  timedelta: datetime.timedelta
+
+functions:
+  add:
+    type: sync
+    module: utils.timeline
+    args: [minutes, activity]
+  design_theme:
+    type: sync
+    module: agents.interior_design_agent
+    args: [event_type, theme, guests, budget]
+    params:
+      returns: dict
+  find_sponsors:
+    type: sync
+    module: agents.sponsorship_agent
+    args: [event_type, audience_size, theme, location]
+    params:
+      returns: dict
+  find_venues:
+    type: sync
+    module: agents.venue_finder_agent
+    args: [event_type, location, guests, budget]
+    params:
+      returns: dict
+  generate_audio:
+    type: sync
+    module: agents.voice_agent
+    args: [summary_text]
+    params:
+      returns: dict
+  generate_invites:
+    type: sync
+    module: agents.invite_manager_agent
+    args: [event_type, channel, guest_count]
+    params:
+      returns: dict
+  generate_timeline:
+    type: sync
+    module: utils.timeline
+    args: [event_type, start_time]
+    params:
+      returns: dict
+  suggest_catering:
+    type: sync
+    module: agents.catering_agent
+    args: [event_type, guests, cuisine, budget, location]
+    params:
+      returns: dict
+
+files:
+  data/catering.json:
+    type: literal
+    actions: [read]
+    params:
+      caller: [suggest_catering]
+  data/sponsors.json:
+    type: literal
+    actions: [read]
+    params:
+      caller: [find_sponsors]
+  data/venues.json:
+    type: literal
+    actions: [read]
+    params:
+      caller: [find_venues]
+  data_path:
+    type: literal
+    actions: [read]
+    params:
+      caller: [Path('data/venues.json'), open, json.load]
